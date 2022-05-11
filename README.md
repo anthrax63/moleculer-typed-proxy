@@ -64,7 +64,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://github.com/anthrax63/moleculer-typed-proxy)
 
-The <a href="https://github.com/moleculerjs/moleculer">Moleculer</a> is a great framework. However, out of the box it is not very typescript friendly. The description of actions and then their subsequent call through a broker are not strongly typed, which can complicate maintenance and refactoring. This library combines the ability to declaratively describe services using decorators, as well as call methods or events using strong typing.
+The <a href="https://github.com/moleculerjs/moleculer">Moleculer</a> is a great framework. However, from the box it is not very typescript friendly. The description of actions and then their subsequent call through a broker are not strongly typed, which can complicate maintenance and refactoring. This library combines the ability to declaratively describe services using decorators, as well as call methods or events using strong typing.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
