@@ -4,10 +4,9 @@
     "module": "commonjs",
     "declaration": true,
     "sourceMap": true,
-    "outDir": "lib",
+    "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
-    "composite": true,
     "strictPropertyInitialization": false,
     "experimentalDecorators": true
   }
