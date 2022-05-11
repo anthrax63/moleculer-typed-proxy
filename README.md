@@ -136,13 +136,121 @@ Method `create` **does not create** the instance of derived service! It's just u
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Emitting events:
+```typescript
+import moleculer, { ServiceBroker } from 'moleculer';
+import {
+    ServiceProxyFactory,
+    service,
+    event,
+    string,
+    number,
+} from 'moleculer-typed-proxy';
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+@service({
+    name: 'logging-service',
+})
+export class LoggingService extends moleculer.Service {
+    @event({
+        name: 'user-registered',
+    })
+    userRegistered(
+        @string() login: string,
+        @string() name: string,
+        @number() age: number,
+    ) {
+        console.log('User registered', login, name, age);
+    }
+}
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+const broker = new ServiceBroker();
+const factory = new ServiceProxyFactory(broker);
 
+const serviceProxy = factory.create(LoggingService);
 
+serviceProxy.userRegistered('login', 'name', 25);
+```
+
+Using with inversify:
+```typescript
+import moleculer, { ServiceBroker } from 'moleculer';
+import {
+    ServiceProxyFactory,
+    service,
+    event,
+    string,
+    number,
+    action,
+} from 'moleculer-typed-proxy';
+import { Container, inject } from 'inversify';
+
+export class BaseService extends moleculer.Service {
+    constructor(
+        @inject('ServiceBroker')
+            broker: ServiceBroker,
+        @inject('ServiceProxyFactory')
+        protected readonly proxyFactory: ServiceProxyFactory,
+    ) {
+        super(broker);
+    }
+}
+
+@service({
+    name: 'user-service',
+})
+export class UserService extends BaseService {
+    @action({
+        name: 'register-user',
+    })
+    registerUser(
+        @string() login: string,
+        @string() name: string,
+        @number() age: number,
+    ) {
+        // Add user to db
+        // ...
+        // Emit event of another service
+        this.proxyFactory
+            .create(LoggingService)
+            .userRegistered(login, name, age);
+    }
+}
+
+@service({
+    name: 'logging-service',
+})
+export class LoggingService extends BaseService {
+    @event({
+        name: 'user-registered',
+    })
+    async userRegistered(
+        @string() login: string,
+        @string() name: string,
+        @number() age: number,
+    ) {
+        console.log('User registered', login, name, age);
+    }
+}
+
+const container = new Container();
+container.bind('ServiceBroker').to(moleculer.ServiceBroker).inSingletonScope();
+container
+    .bind('ServiceProxyFactory')
+    .to(ServiceProxyFactory)
+    .inSingletonScope();
+
+// Get proxy
+const userServiceProxy = container
+    .get<ServiceProxyFactory>(`ServiceProxyFactory`)
+    .create(UserService);
+
+// Call action
+userServiceProxy.registerUser('login', 'name', 25).then(() => {
+    console.log('User created successfully');
+});
+```
+
+See examples directory for more examples.
 
 <!-- ROADMAP -->
 ## Roadmap
