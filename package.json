@@ -1,6 +1,6 @@
 {
     "name": "moleculer-typed-proxy",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Moleculer proxy to use typed calls ",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
