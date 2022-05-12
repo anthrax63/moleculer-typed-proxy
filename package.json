@@ -38,11 +38,17 @@
         "url": "git+https://github.com/anthrax63/moleculer-typed-proxy.git"
     },
     "dependencies": {
-        "@anthrax63/moleculer-service-decorators": "^1.0.7",
+        "@anthrax63/moleculer-service-decorators": "^1.0.8",
         "reflect-metadata": "^0.1.13"
     },
     "peerDependencies": {
         "moleculer": ">=0.14.21"
     },
-    "keywords": ["moleculer", "typescript", "decorators", "proxy", "broker"]
+    "keywords": [
+        "moleculer",
+        "typescript",
+        "decorators",
+        "proxy",
+        "broker"
+    ]
 }
